@@ -8,6 +8,8 @@ from argparse import BooleanOptionalAction
 from datetime import datetime
 from exif import Image
 
+# TODO: Process files in multiple threads
+# TODO: Log to a file, not the console
 # TODO: Allow for include/exclude filters (globs)
 # TODO: Allow for granularity to hour, minute, and second
 
@@ -32,12 +34,20 @@ def get_entry_date(entry):
 def get_exif_date(path):
     with open(entry.path, "rb") as image_file:
         image = Image(image_file)
-        return datetime.strptime(image.datetime, "%Y:%m:%d %H:%M:%S")
+        # image.has_exif still fails if the EXIF data is empty, so catch that condition
+        try:
+            return datetime.strptime(image.datetime, "%Y:%m:%d %H:%M:%S")
+        except :
+            return ""
 
 for entry in scan_tree(f"{args.input}"):
     print(f"Found file {entry.path}")
     modified_date = (get_exif_date(entry.path) if args.exif and entry.path.lower().endswith(".jpg")
             else get_entry_date(entry))
+    # Fallback to the file date if the EXIF date failed
+    if modified_date == "":
+        modified_date = get_entry_date(entry)
+
     if args.granularity == "year":
         date_path = str(modified_date.year)
     elif args.granularity == "month":
@@ -50,6 +60,6 @@ for entry in scan_tree(f"{args.input}"):
     print(f"Saving to {output_file}")
     os.makedirs(output_folder, exist_ok=True)
     if args.action == "copy":
-        shutil.copy(entry.path, output_file)
+        shutil.copy2(entry.path, output_file)
     elif args.action == "move":
         shutil.move(entry.path, output_file)
