@@ -1,6 +1,6 @@
 # python-file-organizer
 
-Organizes files based on their modified date, or optionally the EXIF modified date for `JPG` images.  Files are copied or moved to a destination folder with a directory structure based on the modified date.
+Organizes files based on their modified date, or the EXIF datetime for `JPG` images.  Files are copied or moved to a destination folder with a directory structure based on the modified date.
 
 For example, a file with a modified date of `2020-12-30 00:01:02` would be moved to `$output/2020/12/filename.ext` (assuming a granularity of `month`).
 
@@ -24,9 +24,9 @@ Get help:
 $ python organizer.py --help
 ```
 
-Organize a folder of images, using the EXIF modifed date:
+Organize a folder of images, using the EXIF modified date (`--exif` option is enabled by default):
 ```sh
-$ python organizer.py --input "/C/Pictures/Unsorted" --output "/C/Pictures/Sorted" --exif
+$ python organizer.py --input "/C/Pictures/Unsorted" --output "/C/Pictures/Sorted"
 ```
 
 ## License
