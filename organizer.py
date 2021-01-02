@@ -73,7 +73,7 @@ for entry in scan_tree(f"{args.input}"):
     if args.debug:
         print(f"Found file {entry.path}")
     # Use EXIF datetime for JPG files, otherwise use file date (also fallback to file metadata for unreadable EXIF metadata)
-    if args.exif and entry.path.lower().endswith(".jpg"):
+    if args.exif and (entry.path.lower().endswith(".jpg") or entry.path.lower().endswith(".jpeg")):
         modified_date = get_exif_date(entry.path)
     if modified_date == "":
         modified_date = get_entry_date(entry)
