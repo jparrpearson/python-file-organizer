@@ -29,6 +29,11 @@ Organize a folder of images, using the EXIF modified date (`--exif` option is en
 $ python organizer.py --input "/C/Pictures/Unsorted" --output "/C/Pictures/Sorted"
 ```
 
+Or specify a custom pattern for the files to be saved to under the output directory, where the pattern can include `{year}`, `{month}`, `{day}`, `{hour}`, `{minute}`, `{second}`, or `{sep}` (separator character):
+```sh
+$ python organizer.py --input "/C/Pictures/Unsorted" --output "/C/Pictures/Sorted" --pattern "{year}{sep}{year}-{month}"
+```
+
 ## License
 
 Copyright (c) 2020 Jeremy Parr-Pearson
